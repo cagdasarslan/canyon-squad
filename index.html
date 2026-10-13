@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <title>Canyon Squad</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Oyun içi HUD -->
+    <div id="hud" class="in-menu">
+      <div id="topbar">
+        <button id="btn-pause" class="icon-btn" data-action="pause" aria-label="Duraklat"><span></span><span></span></button>
+        <div id="level">
+          <span class="lvl-num">1</span>
+          <div class="progress"><div class="progress-fill"></div></div>
+          <span class="lvl-num boss-icon">☠</span>
+        </div>
+        <div id="coins"><span class="coin-icon"></span><span class="coin-val">0</span></div>
+      </div>
+      <div id="bossbar" class="hidden">
+        <div class="boss-name">ALTIN AKREP</div>
+        <div class="boss-track"><div class="boss-fill"></div></div>
+      </div>
+      <div id="count"><span>5</span></div>
+    </div>
+
+    <!-- Boss giriş sinematiği -->
+    <div id="cine" class="hidden">
+      <div class="bar top"></div>
+      <div class="bar bottom"></div>
+      <div class="boss-card">
+        <small class="boss-card-sub">BÖLÜM 1 BOSS</small>
+        <b class="boss-card-name">ALTIN AKREP</b>
+      </div>
+      <div class="skip">Geçmek için dokun ▸</div>
+    </div>
+
+    <!-- Ana menü -->
+    <div id="menu" class="overlay screen hidden">
+      <button class="corner-btn left" data-action="daily">🎁<small>ÖDÜL</small><span class="badge badge-daily hidden">!</span></button>
+      <button class="corner-btn left2" data-action="achievements">🏆<small>BAŞARIM</small><span class="badge badge-ach hidden">!</span></button>
+      <button class="corner-btn right2" data-action="leaderboard">🏅<small>SIRALAMA</small></button>
+      <button class="corner-btn right" data-action="missions">📋<small>GÖREVLER</small><span class="badge badge-missions hidden">!</span></button>
+      <div class="title">CANYON<br /><b>SQUAD</b></div>
+      <div class="menu-level">
+        <span>BÖLÜM <span class="menu-level-num">1</span></span>
+        <small class="menu-level-name"></small>
+      </div>
+      <div class="menu-coins"><span class="coin-icon"></span><span class="menu-coin-val">0</span></div>
+      <button class="btn btn-play" data-action="play">OYNA</button>
+      <div class="menu-row">
+        <button class="btn btn-shop" data-action="shop">🛒 MARKET<span class="badge badge-shop hidden">!</span></button>
+        <button class="btn btn-chars" data-action="chars">👤 KARAKTER<span class="badge badge-chars hidden">!</span></button>
+      </div>
+      <div class="menu-row">
+        <button class="btn btn-alt" data-action="levels">🗺️ HARİTALAR</button>
+        <button class="btn btn-alt" data-action="settings">AYARLAR</button>
+      </div>
+      <div class="hint"><span class="hand"></span>SÜRÜKLE &amp; YÖNLENDİR</div>
+    </div>
+
+    <!-- Bölüm seçimi -->
+    <div id="panel-levels" class="overlay screen hidden">
+      <div class="panel-card">
+        <div class="panel-title">HARİTALAR</div>
+        <div class="map-strip"></div>
+        <div class="level-info"></div>
+        <div class="lv-pager">
+          <button class="lv-arrow" data-action="lv-prev" aria-label="Önceki 10 bölüm">‹</button>
+          <div class="lv-page-title"></div>
+          <button class="lv-arrow" data-action="lv-next" aria-label="Sonraki 10 bölüm">›</button>
+        </div>
+        <div class="level-grid"></div>
+        <div class="lv-dots"></div>
+        <button class="btn btn-alt" data-action="back">GERİ</button>
+      </div>
+    </div>
+
+    <!-- Market: yükseltmeler ve karakterler -->
+    <div id="panel-shop" class="overlay screen shop hidden">
+      <div class="panel-card shop-card">
+        <div class="shop-head">
+          <div class="panel-title">MARKET</div>
+          <div class="shop-coins"><span class="coin-icon"></span><span class="shop-coin-val">0</span></div>
+        </div>
+        <div class="tabs">
+          <button class="tab active" data-action="tab" data-tab="upgrades">YÜKSELTMELER</button>
+          <button class="tab" data-action="tab" data-tab="skins">KOSTÜMLER</button>
+        </div>
+        <div class="shop-list" id="shop-upgrades"></div>
+        <div class="shop-list skin-grid hidden-tab" id="shop-skins"></div>
+        <button class="btn btn-alt" data-action="back">GERİ</button>
+      </div>
+    </div>
+
+    <!-- Günlük ödül -->
+    <div id="panel-daily" class="overlay screen hidden">
+      <div class="panel-card">
+        <div class="panel-title">GÜNLÜK ÖDÜL</div>
+        <div class="daily-days"></div>
+        <button class="btn btn-play" data-action="claim-daily">ÖDÜLÜ AL</button>
+        <div class="daily-note"></div>
+        <button class="btn btn-alt" data-action="back">KAPAT</button>
+      </div>
+    </div>
+
+    <!-- Günlük görevler -->
+    <div id="panel-missions" class="overlay screen hidden">
+      <div class="panel-card">
+        <div class="panel-title">GÜNLÜK GÖREVLER</div>
+        <div class="mission-list"></div>
+        <div class="mission-note"></div>
+        <button class="btn btn-alt" data-action="back">GERİ</button>
+      </div>
+    </div>
+
+    <!-- Başarımlar -->
+    <div id="panel-achievements" class="overlay screen hidden">
+      <div class="panel-card ach-card">
+        <div class="panel-title">BAŞARIMLAR</div>
+        <div class="ach-count"></div>
+        <div class="shop-list ach-list"></div>
+        <button class="btn btn-alt" data-action="back">GERİ</button>
+      </div>
+    </div>
+
+    <!-- Liderlik tablosu -->
+    <div id="panel-leaderboard" class="overlay screen hidden">
+      <div class="panel-card lb-card">
+        <div class="panel-title">SIRALAMA</div>
+        <div class="tabs">
+          <button class="tab active" data-action="lb-tab" data-tab="all">TÜM ZAMANLAR</button>
+          <button class="tab" data-action="lb-tab" data-tab="levels">BÖLÜM REKORLARI</button>
+        </div>
+        <label class="lb-name">Takma ad <input id="lb-name-input" maxlength="14" autocomplete="off" spellcheck="false" /></label>
+        <div class="shop-list lb-list"></div>
+        <div class="lb-me hidden-tab"></div>
+        <button class="btn btn-alt" data-action="back">GERİ</button>
+      </div>
+    </div>
+
+    <!-- Karakter mağazası: üstte 3D önizleme (sahnede), altta kart -->
+    <div id="panel-chars" class="overlay screen char-store hidden">
+      <div class="cs-head">
+        <button class="cs-back" data-action="back" aria-label="Geri">‹</button>
+        <div class="panel-title">KARAKTERLER</div>
+        <div class="shop-coins"><span class="coin-icon"></span><span class="cs-coin-val">0</span></div>
+      </div>
+      <button class="cs-arrow left" data-action="char-prev" aria-label="Önceki">‹</button>
+      <button class="cs-arrow right" data-action="char-next" aria-label="Sonraki">›</button>
+      <div class="cs-loading hidden">YÜKLENİYOR…</div>
+      <div class="panel-card cs-card">
+        <div class="cs-title-row">
+          <span class="cs-rarity">SIRADAN</span>
+          <span class="cs-name">Asker</span>
+        </div>
+        <div class="cs-perk"><span class="cs-perk-icon">🪖</span><span class="cs-perk-text"></span></div>
+        <div class="cs-vehicles"></div>
+        <div class="cs-dots"></div>
+        <button class="btn btn-play cs-buy" data-action="char-buy">KUŞAN</button>
+      </div>
+    </div>
+
+    <!-- Ayarlar -->
+    <div id="panel-settings" class="overlay screen hidden">
+      <div class="panel-card">
+        <div class="panel-title">AYARLAR</div>
+        <label class="toggle"><span>Ses Efektleri</span><input type="checkbox" id="opt-sfx" /><i></i></label>
+        <label class="toggle"><span>Müzik</span><input type="checkbox" id="opt-music" /><i></i></label>
+        <label class="toggle"><span>Yüksek Grafik</span><input type="checkbox" id="opt-hq" /><i></i></label>
+        <label class="toggle test"><span>Test: Tüm Haritalar Açık</span><input type="checkbox" id="opt-test" /><i></i></label>
+        <button class="btn btn-danger" data-action="reset">İLERLEMEYİ SIFIRLA</button>
+        <button class="btn btn-alt" data-action="back">GERİ</button>
+      </div>
+    </div>
+
+    <!-- Duraklatma -->
+    <div id="panel-pause" class="overlay screen hidden">
+      <div class="panel-card">
+        <div class="panel-title">DURAKLATILDI</div>
+        <button class="btn btn-play" data-action="resume">DEVAM</button>
+        <button class="btn btn-alt" data-action="restart">YENİDEN BAŞLA</button>
+        <button class="btn btn-alt" data-action="settings">AYARLAR</button>
+        <button class="btn btn-alt" data-action="home">ANA MENÜ</button>
+      </div>
+    </div>
+
+    <!-- Bölüm sonu -->
+    <div id="overlay-end" class="overlay screen hidden">
+      <div class="title end-title">ZAFER!</div>
+      <div class="end-sub"></div>
+      <div class="end-score">SKOR <b class="end-score-val">0</b></div>
+      <div class="end-record hidden-tab">🏆 YENİ REKOR!</div>
+      <div class="end-rank"></div>
+      <div class="end-coins"><span class="coin-icon"></span><span class="end-coin-val">0</span></div>
+      <button class="btn btn-play" id="btn-restart" data-action="next">SONRAKİ BÖLÜM</button>
+      <div class="menu-row">
+        <button class="btn btn-alt" data-action="home">ANA MENÜ</button>
+        <button class="btn btn-shop" data-action="go-shop">🛒 MARKET</button>
+      </div>
+    </div>
+
+    <!-- Bildirim: menüde ve oyunda görünür -->
+    <div id="toast"></div>
+
+    <div id="loading" class="overlay">
+      <div class="load-text">YÜKLENİYOR</div>
+      <div class="load-track"><div class="load-fill"></div></div>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

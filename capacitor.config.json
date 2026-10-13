@@ -1,0 +1,11 @@
+{
+  "appId": "com.cagdas.canyonsquad",
+  "appName": "Canyon Squad",
+  "webDir": "dist",
+  "backgroundColor": "#1a110b",
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "backgroundColor": "#1a110b"
+  }
+}
